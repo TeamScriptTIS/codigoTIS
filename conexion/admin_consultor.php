@@ -1,13 +1,12 @@
 <?php
-
     if(!isset($titulo)){
         header('Location: ../index.php');
     }
+    
     include('conexion.php');
-		session_start();
+    session_start();
     //Bitacora de navegacion de la base de datos
-		$bitacora = mysql_query("CALL iniciar_sesion(".$_SESSION['id'].")",$conn)
-          					or die("Error no se pudo realizar cambios.");
+    $bitacora = mysql_query("CALL iniciar_sesion(".$_SESSION['id'].")",$conn)or die("Error no se pudo realizar cambios.");
 
     $c = "SELECT COUNT(*) as numer
           FROM   usuario
@@ -17,25 +16,32 @@
 
     $res    = mysql_fetch_array(mysql_query($c));
     $num    = $res['numer'];
+    
     $counta = 0;
-
+    $bb=true;
     while($counta < $num){
-      $a = $_POST["a".$counta];
-      $b = 3;
-      $c = 0;
-
-      if($_POST["b".$counta]){
-         $b = 2;
-      }
-
-      if($_POST["c".$counta]){
-         $c = 1;
-      }
-      $sql = "UPDATE usuario 
-              SET  tipo_usuario = '$b',habilitado='$c' 
-              WHERE id_usuario = '$a'";
-      $result = mysql_query($sql);
-      $counta++;
+        $a = $_POST["a".$counta];
+        $b = 3;
+        $c = 0;
+        if($_POST["b".$counta]){
+           $b = 2;
+        }
+        if($_POST["c".$counta]){
+           $c = 1;
+        }
+        $sql = "UPDATE usuario 
+                SET  tipo_usuario = '$b',habilitado='$c' 
+                WHERE id_usuario = '$a'";
+        $result = mysql_query($sql);
+        if ($result==true){
+            $bb=$bb && true;
+        }else{
+            $bb=$bb && false;
+        }
+        $counta++;
     }
+    
+    $_SESSION['exito'] = $bb;
+    
     header("Location:../administrar_consultor.php");
-?>
+     

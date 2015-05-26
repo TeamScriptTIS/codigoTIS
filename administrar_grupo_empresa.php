@@ -29,23 +29,21 @@
 /*----------------------FIN VERIFICACION------------------------------------*/
     include('header.php');
  ?>
-
-
- 			<!--PARTICIONAR
- 			<li>
-						<a href="#">Inicio</a> <span class="divider">/</span>
-			</li>-->
-			<div>
-				<ul class="breadcrumb">
-					<li>
-						<a href="index.php">Inicio</a>
-						<span class="divider">/</span>
-					</li>
-					<li>
-						<a href="administrar_consultor.php">Administrar grupo empresas</a>
-					</li>
-				</ul>
-			</div>
+    <!--PARTICIONAR
+    <li>
+                            <a href="#">Inicio</a> <span class="divider">/</span>
+    </li>-->
+    <div>
+        <ul class="breadcrumb">
+            <li>
+                <a href="index.php">Inicio</a>
+                <span class="divider">/</span>
+            </li>
+            <li>
+                <a href="administrar_consultor.php">Administrar grupo empresas</a>
+            </li>
+        </ul>
+    </div>
 			<center><h3>Administrar Grupo empresas</h3></center>
 			<div class="row-fluid">
 		            <div class="box span12">
@@ -103,12 +101,12 @@
 					  </table>
                       <?php 
                         echo "<input type=\"hidden\" id=count name=count value=".$identi." ></input>"; ?>
-                               <div class="control-group">
-								<div class="controls">
-						         <button name="enviar"type="submit" class="btn btn-primary" id="enviar"><i class="icon-ok"></i> Guardar cambios </button>
-								 <button type="reset" class="btn">Restablecer</button>
-                                </div>
-								 </div>
+                            <div class="control-group">
+                                 <div class="controls">
+                                     <button name="enviar"type="submit" class="btn btn-primary" id="enviar"><i class="icon-ok"></i> Guardar cambios </button>
+                                     <button type="reset" class="btn">Restablecer</button>
+                                 </div>
+                             </div>
                     </form>
                    <?php }
                             else{
@@ -117,8 +115,17 @@
                                 Ninguna Grupo Empresa se ha registrado.</h4>
                                 </div>";
                             }
+                            
+            if(isset($_SESSION['exito'])){
+                if($_SESSION['exito']==true){
+                    echo "<script>  alert('Las Modificaciones han sido realizadas Correctamente.');  </script>";
+                }else{
+                    echo "<script>  alert('UPss! Las Modificaciones NO han sido realizadas Correctamentes.');  </script>";
+                }
+            }
+            $_SESSION['exito']=NULL;
                   ?>
-					</div>
-				</div><!--/span-->
-				</div>
+                    </div>
+            </div><!--/span-->
+    </div>
 <?php include('footer.php'); ?>
