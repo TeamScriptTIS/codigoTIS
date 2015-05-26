@@ -11,16 +11,17 @@
         $c =  0;                   //habilitado ?
         if($_POST["c".$counta])
             $c = 1;
-            $idUsuarios = mysql_query("SELECT id_usuario 
-                                FROM usuario, integrante 
-                                WHERE usuario=id_usuario and grupo_empresa=(SELECT id_grupo_empresa 
-                                                                FROM integrante, usuario, grupo_empresa 
-                                                                WHERE usuario=id_usuario and grupo_empresa=id_grupo_empresa and usuario=4")or die("l");
-            foreach ($idUsuarios as $v) {
-                $sql    = "UPDATE usuario SET habilitado='$c' WHERE id_usuario ='$v'";
-                $result = mysql_query($sql);
-            }
-
+        $consulta="SELECT id_usuario
+                    FROM usuario,integrante
+                    WHERE usuario = id_usuario AND grupo_empresa = (SELECT id_grupo_empresa 
+                                                                    FROM integrante, usuario,grupo_empresa 
+                                                                    WHERE usuario = id_usuario AND grupo_empresa = id_grupo_empresa AND usuario ='$a')";
+        $idUsuarios=mysql_query($consulta, $conn) or die(mysql_error());
+        while ($row = mysql_fetch_array($idUsuarios)) {
+            $val    = $row['id_usuario'];
+            $sql    = "UPDATE usuario SET habilitado='$c' WHERE id_usuario ='$val'";
+            $result = mysql_query($sql)or die(mysql_error());
+        }
         if ($result==true){
             $bb=$bb && true;
         }else{
@@ -28,6 +29,5 @@
         }
         $counta++;     
     }
-    
     $_SESSION['exito'] = $bb;
     header("Location:../administrar_grupo_empresa.php");
