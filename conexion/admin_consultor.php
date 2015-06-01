@@ -3,6 +3,7 @@
     if(!isset($titulo)){
         header('Location: ../index.php');
     }
+
     include('conexion.php');
 		session_start();
     //Bitacora de navegacion de la base de datos
@@ -31,11 +32,14 @@
       if($_POST["c".$counta]){
          $c = 1;
       }
+
       $sql = "UPDATE usuario 
-              SET  tipo_usuario = '$b',habilitado='$c' 
+              SET    tipo_usuario = '$b',habilitado='$c' 
               WHERE id_usuario = '$a'";
+              
       $result = mysql_query($sql);
       $counta++;
     }
+
     header("Location:../administrar_consultor.php");
 ?>
