@@ -1,9 +1,9 @@
 <?php
-$titulo="Mis tareas";
-include('conexion/verificar_gestion.php');
-session_start();
-$quien_ingresa="Grupo Empresa";
-$pag_ini="home_grupo.php";
+  $titulo="Mis tareas";
+  include('conexion/verificar_gestion.php');
+  session_start();
+  $quien_ingresa="Grupo Empresa";
+  $pag_ini="home_grupo.php";
 
 /*------------------VERIFICAR QUE SEAL EL CONSULTOR------------------------*/
 if(isset($_SESSION['nombre_usuario']) && ($_SESSION['tipo']==1 || $_SESSION['tipo']==2 || $_SESSION['tipo']==3))
@@ -27,10 +27,12 @@ elseif(!isset($_SESSION['nombre_usuario'])){
 }
 /*----------------------FIN VERIFICACION------------------------------------*/
 include('header.php');
+
 if($gestion_valida){
 $bitacora = mysql_query("CALL iniciar_sesion(".$_SESSION['id'].")",$conn)
 or die("Error no se pudo realizar cambios.");
 }
+
 $consulta_id_ge = mysql_query("SELECT ge.id_grupo_empresa ,ge.nombre_corto
                                FROM integrante i,grupo_empresa ge
                                WHERE i.usuario=".$_SESSION['id']." and i.grupo_empresa=ge.id_grupo_empresa",$conn)  or die("Could not execute the select query.");
@@ -40,8 +42,8 @@ $no_ge=$resultado_id_ge['nombre_corto'];
 
   if(isset($_POST['enviar'])){
     $ta=$_POST['entreprod'];
-	$url=$_POST['co_url'];
-	$avance=$_POST['avance'];
+	   $url=$_POST['co_url'];
+    $avance=$_POST['avance'];
         $sql = "UPDATE tarea SET  porcentaje_completado='$avance', resultado_obtenido='$url' WHERE id_tarea ='$ta'";
                       $result = mysql_query($sql);
                              $consulta = mysql_query("SELECT t.actividad
@@ -65,6 +67,7 @@ $no_ge=$resultado_id_ge['nombre_corto'];
 
   }
  ?>
+
 <script type="text/javascript">
 	function imprimir(){
   var objeto=document.getElementById('print');  //obtenemos el objeto a imprimir
@@ -250,6 +253,4 @@ $no_ge=$resultado_id_ge['nombre_corto'];
           </div><!--/span-->
         </div><!-- fin row -->
               <?php     }  ?>
-
-
 <?php include('footer.php'); ?>

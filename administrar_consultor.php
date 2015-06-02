@@ -95,10 +95,10 @@ include('header.php');
                                          }
                                         $aux= $row["tipo_usuario"];
                                         if($aux=="2"){
-                                           echo "<td class=\"center\"><center> <input type=\"radio\" id=b".$identi." name=\"jefeconsultor\" checked></center></td>";
-                                         }else{
-                                            echo "<td class=\"center\"><center> <input type=\"radio\" id=b".$identi." name=\"jefeconsultor\"></center></td>";
-                                          }
+                                            echo "<td class=\"center\"><center> <input type=\"radio\" id=b".$identi." name=\"jefeconsultor\" value=b".$identi." checked></center></td>";
+                        } else{
+                          echo "<td class=\"center\"><center> <input type=\"radio\" id=b".$identi." name=\"jefeconsultor\" value=b".$identi."></center></td>";
+                        }
 
                                          /* {
                                            echo "<td ><center> <input type=\"checkbox\" id=b".$identi." name=b".$identi."  checked></center></td>";

@@ -24,10 +24,14 @@
       $a = $_POST["a".$counta];
       $b = 3;
       $c = 0;
+      
+      if ($_POST['jefeconsultor']=="b".$counta) {
+      $b= 2;
+    }
 
-      if($_POST["b".$counta]){
-         $b = 2;
-      }
+//      if($_POST["b".$counta]){
+//         $b = 2;
+//      }
 
       if($_POST["c".$counta]){
          $c = 1;

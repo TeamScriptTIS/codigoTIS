@@ -1,11 +1,9 @@
 <?php
 	session_start();
 	$valido = $_SESSION['nombre_usuario'];
-
 	if(!$valido || $valido == ""){
 		header("Location:../index.php");
 	}
-
 	//destruir sesion  y registrarlo en la bitacora
 	session_start();
 

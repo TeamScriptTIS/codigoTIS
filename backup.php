@@ -3,29 +3,29 @@ $titulo="Respaldo y Restauraci&oacute;n de la Base de Datos";
 include('conexion/verificar_gestion.php');
 session_start();
 /*------------------VERIFICAR QUE SEAL EL ADMINISTRADOR------------------------*/
-    if(isset($_SESSION['nombre_usuario']) && $_SESSION['tipo']!=1)
-    {/*SI EL QUE INGRESO A NUESTRA PAGINA ES CONSULTOR DE CUALQUIER TIPO*/
-            $home="";
-            switch  ($_SESSION['tipo']){
+if(isset($_SESSION['nombre_usuario']) && $_SESSION['tipo']!=1){
+/*SI EL QUE INGRESO A NUESTRA PAGINA ES CONSULTOR DE CUALQUIER TIPO*/
+        $home="";
+        switch  ($_SESSION['tipo']){
 
-                    case (2) :
-                        $home="home_consultor_jefe.php";
-                        break;
-                    case (3) :
-                         $home="home_consultor.php";
-                         break;
-                    case (4) :
-                         $home="home_grupo.php";
-                         break;
-                    case (5) :
-                        $home="home_integrante.php";
-                        break;
-                  }
-            header("Location: ".$home);
-    }
-    elseif(!isset($_SESSION['nombre_usuario'])){
-        header("Location: index.php");
-    }
+                case (2) :
+                    $home="home_consultor_jefe.php";
+                    break;
+                case (3) :
+                     $home="home_consultor.php";
+                     break;
+                case (4) :
+                     $home="home_grupo.php";
+                     break;
+                case (5) :
+                    $home="home_integrante.php";
+                    break;
+              }
+        header("Location: ".$home);
+}
+elseif(!isset($_SESSION['nombre_usuario'])){
+    header("Location: index.php");
+}
 /*----------------------FIN VERIFICACION------------------------------------*/
 $directorio='../public_html';//LINUX
 //$directorio='backups';//WINDOWS
@@ -44,6 +44,7 @@ if(isset($_GET['backup']) && isset($_GET['file'])){
       <div class=\"alert alert-success\">
       <button type=\"button\" class=\"close\" data-dismiss=\"alert\">×</button>".$tipo_backup."</div></div>";
 }
+
 if(isset($_GET['error'])){
 	$tipo_error="";
 	if($_GET['error']==1){
@@ -57,12 +58,14 @@ if(isset($_GET['error'])){
 	}else{
 		header("Location: index.php");
 	}
+
 	$mensaje="<br/><div class=\"row-fluid\">
 			<div class=\"alert alert-error\">
       			<button type=\"button\" class=\"close\" data-dismiss=\"alert\">×</button>
 			<strong>Error: </strong>".$tipo_error."
 		  </div></div>";
 }
+
 if(isset($_POST['nuevo'])){
 	$fechaDeLaCopia = date("dmY-His");
 	$name_file="mysql-tis-".$fechaDeLaCopia.".sql";
@@ -72,15 +75,12 @@ if(isset($_POST['nuevo'])){
 	$DirBase=mysql_result($restore,0,"value");
 	$primero=substr($DirBase,0,1);
 	if ($primero=="/") {
-	    $DirBase=$DirBase."bin/mysqldump";
-
+	    $DirBase=$DirBase."/bin/mysqldump";
+	}else{
+	    $DirBase=$DirBase."\bin\mysqldump";
 	}
-	else
-	{
-	    $DirBase=$DirBase."bin\mysqldump";
-
-	}
-    $executa="$DirBase -h webtisdb.cs.umss.edu.bo -u munisoft -pWSVBtmXg tis_munisoft > ".$name_file;
+	$executa="$DirBase -h localhost -u root - tis_munisoft2 > ".$name_file;
+    //$executa="$DirBase -h webtisdb.cs.umss.edu.bo -u munisoft -pWSVBtmXg tis_munisoft > ".$name_file;
     system($executa,$resultado);
 	if ($resultado)  //si hay error
 	{
@@ -94,6 +94,7 @@ if(isset($_POST['nuevo'])){
 			header('Location: backup.php?backup=2&file='.$name_file);
 	}
 }
+
 if(isset($_POST['aceptar'])){
 	if(isset($_POST['archivo'])){
 		$backup_file=$directorio."/".$_POST['archivo'];
@@ -104,12 +105,10 @@ if(isset($_POST['aceptar'])){
 			$primero=substr($DirBase,0,1);
 			if ($primero=="/") {
 			    $DirBase=$DirBase."/bin/mysql";
-			}
-			else
-			{
+			}else{
 			    $DirBase=$DirBase."\bin\mysql";
 			}
-			$executa = "$DirBase -h webtisdb.cs.umss.edu.bo -u munisoft -pWSVBtmXg  tis_munisoft < $backup_file";
+			$executa = "$DirBase -h localhost -u root -p  tis_munisoft2 < $backup_file";
 			system($executa,$resultado);
 			if ($resultado)  //si hay error
 			{
@@ -128,17 +127,18 @@ if(isset($_POST['aceptar'])){
 }
 include('header.php');
  ?>
-			<div>
-				<ul class="breadcrumb">
-					<li>
-						<a href="index.php">Inicio</a>
-						<span class="divider">/</span>
-					</li>
-					<li>
-						<a href="backup.php">Respaldo y Restauraci&oacute;n de la Base de Datos</a>
-					</li>
-				</ul>
-			</div>
+
+<div>
+	<ul class="breadcrumb">
+		<li>
+			<a href="index.php">Inicio</a>
+			<span class="divider">/</span>
+		</li>
+		<li>
+			<a href="backup.php">Respaldo y Restauraci&oacute;n de la Base de Datos</a>
+		</li>
+	</ul>
+</div>
 			<center><h3>Respaldo y Restauraci&oacute;n de la Base de Datos</h3></center>
 	<?php
 		if($mensaje!=NULL){ echo $mensaje; }
@@ -149,6 +149,7 @@ include('header.php');
             <h2><i class="icon-book"></i> Archivos de Restauraci&oacute;n de la Base de Datos disponibles</h2>
           </div>
           <div class="box-content">
+          	
 	    <form name="form-data" method="POST" id="form_8" action="backup.php" accept-charset="utf-8">
             <table class="table table-striped table-bordered  datatable">
               <thead>
@@ -190,7 +191,11 @@ include('header.php');
              ?>
               </tbody>
             </table></br>
-		<button class="btn btn-success btn-setting"><i class="icon-backward"></i> Restaurar</button>  <button class="btn btn-primary btn-setting2" id="enviar_3"><i class="icon-plus"></i> Nuevo archivo de respaldo</button> <a href="javascript:history.back();" class="btn"><i class="icon-arrow-left"></i> Volver Atras</a>
+
+		<button class="btn btn-success btn-setting"><i class="icon-backward"></i> Restaurar</button> 
+		<button class="btn btn-primary btn-setting2" id="enviar_3"><i class="icon-plus"></i> Nuevo archivo de respaldo</button>
+		 <a href="javascript:history.back();" class="btn"><i class="icon-arrow-left"></i> Volver Atras</a>
+
 	    <div class="modal hide fade" id="myModal">
 			<div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal">×</button>
@@ -204,35 +209,40 @@ include('header.php');
 				<button type="submit" name="aceptar" value="aceptar" class="btn btn-primary"><i class="icon-ok"></i> Aceptar</button>
 			</div>
 		</div>
-<div class="modal hide fade" id="myModal2">
-			<div class="modal-header">
-				<button type="button" class="close" data-dismiss="modal">×</button>
-				<h3>Crear nuevo archivo de Respaldo</h3>
-			</div>
-			<div class="modal-body">
-				<?php
-					$ayer=date("Y-m-d");
-					$consulta_verifica="SELECT COUNT('id_bitacora') as cantidad from bitacora_bd where fecha_hora >= '$ayer 00:00:01'";
-					$res = mysql_query($consulta_verifica,$conn);
-					$row = mysql_fetch_array($res);
-					$cantidad=$row['cantidad'];
-					if ($cantidad>0) {
-						echo "Se ha registrado ".$cantidad." cambio(s) en la base de datos desde las 12:00 a.m. del d&iacute;a de hoy.</br>
-							Est&aacute; de acuerdo con generar un nuevo archivo de respaldo de la base de datos actual.</br>
-							<b>Presione en Aceptar si usted desea crear una nueva copia de seguridad de la base de datos actual.</b>";
-					}else{
-						echo "<p>No se ha registrado nig&uacute;n cambio en la base de datos desde las 12:00 a.m. del d&iacute;a de hoy.</br>
-						 Un archivo de respaldo ser&aacute; de utilidad si ocurre alg&uacute;n error con el sistema.<br>
-						<b>Presione en Aceptar si usted desea crear una nueva copia de seguridad de la base de datos actual.</b>";
-					}
 
-				?>
-			</div>
-			<div class="modal-footer">
-				<a href="#" class="btn" data-dismiss="modal"><i class="icon-remove"></i> Cancelar</a>
-				<button type="submit" name="nuevo" value="nuevo" class="btn btn-primary"><i class="icon-ok"></i> Aceptar</button>
-			</div>
-		</div>
+
+<div class="modal hide fade" id="myModal2">
+	<div class="modal-header">
+		<button type="button" class="close" data-dismiss="modal">×</button>
+		<h3>Crear nuevo archivo de Respaldo</h3>
+	</div>
+	<div class="modal-body">
+		<?php
+			$ayer = date("Y-m-d");
+			$consulta_verifica="SELECT COUNT('id_bitacora') as cantidad from bitacora_bd where fecha_hora >= '$ayer 00:00:01'";
+			$res = mysql_query($consulta_verifica,$conn);
+			$row = mysql_fetch_array($res);
+			$cantidad=$row['cantidad'];
+			if ($cantidad>0) {
+				echo "Se ha registrado ".$cantidad." cambio(s) en la base de datos desde las 12:00 a.m. del d&iacute;a de hoy.</br>
+					Est&aacute; de acuerdo con generar un nuevo archivo de respaldo de la base de datos actual.</br>
+					<b>Presione en Aceptar si usted desea crear una nueva copia de seguridad de la base de datos actual.</b>";
+			}else{
+				echo "<p>No se ha registrado nig&uacute;n cambio en la base de datos desde las 12:00 a.m. del d&iacute;a de hoy.</br>
+				 Un archivo de respaldo ser&aacute; de utilidad si ocurre alg&uacute;n error con el sistema.<br>
+				<b>Presione en Aceptar si usted desea crear una nueva copia de seguridad de la base de datos actual.</b>";
+			}
+
+		?>
+	</div>
+	<div class="modal-footer">
+		<a href="#" class="btn" data-dismiss="modal"><i class="icon-remove"></i> Cancelar</a>
+		<button type="submit" name="nuevo" value="nuevo" class="btn btn-primary"><i class="icon-ok"></i> Aceptar</button>
+	</div>
+</div>		
+
+
+
 	    </form>
           </div>
         </div><!--/span-->

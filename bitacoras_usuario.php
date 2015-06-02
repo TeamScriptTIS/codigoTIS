@@ -1,32 +1,33 @@
 <?php
-$titulo="Bit&aacute;coras de usuario";
-include('conexion/verificar_gestion.php');
-session_start();
+  $titulo="Bit&aacute;coras de usuario";
+  include('conexion/verificar_gestion.php');
+  session_start();
 /*------------------VERIFICAR QUE SEAL EL ADMINISTRADOR------------------------*/
     if(isset($_SESSION['nombre_usuario']) && $_SESSION['tipo']!=1)
     {/*SI EL QUE INGRESO A NUESTRA PAGINA ES CONSULTOR DE CUALQUIER TIPO*/
             $home="";
             switch  ($_SESSION['tipo']){
-                    
-                    case (2) :
-                        $home="home_consultor_jefe.php";
-                        break;
-                    case (3) :
-                         $home="home_consultor.php";
-                         break;
-                    case (4) :
-                         $home="home_grupo.php";
-                         break;
-                    case (5) :
-                        $home="home_integrante.php";
-                        break;                                                                     
-                  }   
+              case (2) :
+                  $home="home_consultor_jefe.php";
+                  break;
+              case (3) :
+                   $home="home_consultor.php";
+                   break;
+              case (4) :
+                   $home="home_grupo.php";
+                   break;
+              case (5) :
+                  $home="home_integrante.php";
+                  break;                                                                     
+            }   
             header("Location: ".$home);
     }
     elseif(!isset($_SESSION['nombre_usuario'])){
         header("Location: index.php");
     }
+
 /*----------------------FIN VERIFICACION------------------------------------*/
+
 $consulta = "SELECT id_bitacora_sesion, fecha_hora, operacion, nombre_usuario,g.gestion,descripcion
               FROM bitacora_sesion b, usuario u, gestion_empresa_tis g,tipo_usuario
               WHERE id_usuario=usuario AND u.gestion=g.id_gestion  AND tipo_usuario=id_tipo_usuario";
@@ -229,8 +230,7 @@ if(isset($_POST['filtrar_2'])){
     $consulta_2=$consulta_2." AND tipo_usuario=$filtro_tipo_2";
   }
   if(!$error){
-          //header('Location: modificar_registro_consultor.php?value='.$quien);
-      
+          //header('Location: modificar_registro_consultor.php?value='.$quien);      
   }
 }
 
